@@ -29,14 +29,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: arturo-ojeda/action-regex-match@v2.0.5-arturo
+      - name: Validate input
         id: regex-match
-        with:
-          text: ${{ inputs.version }}
-          regex: '^v(\d+)\.(\d+)\.(\d+)-?(\w*)\+?(\d*)$'
+        run: |
+          text="${INPUT_VERSION}";
+          regex="^v([0-9]+)\.([0-9]+)\.([0-9]+)-?([[:alnum:]]*)\+?([0-9]*)$";
+          # Perform the regex match
+          if grep -qE "$regex" <<< "$text"; then
+              echo "match=true" >> "$GITHUB_OUTPUT";
+          else
+              echo "match=false" >> "$GITHUB_OUTPUT";
+          fi
 
       - name: Fail if don't match regex
-        if: ${{ inputs.version && steps.regex-match.outputs.match == '' }}
+        if: ${{ inputs.version && steps.regex-match.outputs.match == 'false' }}
         run: |
           echo "${{inputs.version}} doesn't match regex. Use a version similar to v3.1.4-alpha+159"
           exit 1;
