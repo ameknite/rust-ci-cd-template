@@ -1,4 +1,4 @@
-# Rust CI/CI template
+# Rust CI/CD template
 
 ![License](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)
 [![Crates.io](https://img.shields.io/crates/v/rust-ci-cd-template.svg)](https://crates.io/crates/rust-ci-cd-template)
