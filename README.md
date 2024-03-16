@@ -1,9 +1,9 @@
 # Rust CI/CI template
 
 ![License](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)
-[![Crates.io](https://img.shields.io/crates/v/rust_cicd_template.svg)](https://crates.io/crates/rust_cicd_template)
+[![Crates.io](https://img.shields.io/crates/v/rust_ci_cd_template.svg)](https://crates.io/crates/rust_ci_cd_template)
 ![Minimum Supported Rust Version](https://img.shields.io/badge/MSRV-1.56.1+-red)
-[![CI](https://github.com/ameknite/rust_cicd_template/workflows/CI/badge.svg)](https://github.com/ameknite/rust_cicd_template/actions?workflow=CI)
+[![CI](https://github.com/ameknite/rust_ci_cd_template/workflows/CI/badge.svg)](https://github.com/ameknite/rust_ci_cd_template/actions?workflow=CI)
 
 Template to maintain a rust project running CI/CD.
 

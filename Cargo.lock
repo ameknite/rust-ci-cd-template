@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "rust_cicd_template"
+name = "rust_ci_cd_template"
 version = "0.1.0"
