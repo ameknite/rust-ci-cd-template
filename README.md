@@ -24,7 +24,7 @@ It will run:
 - [typos](https://crates.io/crates/typos):
   - Source code spell checker.
   - Check for the [typos.toml](./typos.toml) file.
-  - docs: <https://github.com/crate-ci/typos/blob/master/docs/reference.md>
+  - [docs](https://github.com/crate-ci/typos/blob/master/docs/reference.md)
 - [taplo fmt](https://taplo.tamasfe.dev/): Toml formatter.
 - [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2):
   - Markdown linter and formatter.
@@ -48,7 +48,9 @@ This workflow will only run manually through GitHub.
 It will:
 
 - Validate your input version with regex (e.g. v3.1.4-alpha+159).
+
 - Run the ci workflow.
+
 - Run [cargo semver-checks](https://crates.io/crates/cargo-semver-checks):
   - Lint your crate API changes for semver violations.
   - This will only run if you crate is a library.
@@ -97,18 +99,19 @@ Here you can do three things to run the workflow:
 
   1. Write the new version you want to release:
     - The version is in the form of:
-      - Version parts: ${MAJOR}.${MINOR}.${PATCH}-${PRE-RELEASE}+${BUILD}
+      - Version parts: `${MAJOR}.${MINOR}.${PATCH}-${PRE-RELEASE}+${BUILD}`
       - Example: 3.1.4-alpha+159
-  2. Select the release_type you want:
-    - `patch`, `minor` and `major`.
-    - It will use your current crate version as a baseline.
-    - Keep in `none` if you only want the writing version.
-     ![Screenshot 2024-03-16 at 02 12 01](https://github.com/ameknite/rust_ci_cd_template/assets/104745335/57a4215d-e297-48ce-abbe-9c2d471837dd)
+  2. Select the release_type you want:  
 
-  4. Keep all with the defaults (without version and release_type = none)
-    - It will use your current crate version as a baseline.
-    - Run if you already update your crate version.
-    - Useful for testing when you already run the workflow.
+      ![Screenshot 2024-03-16 at 02 12 01](https://github.com/ameknite/rust_ci_cd_template/assets/104745335/57a4215d-e297-48ce-abbe-9c2d471837dd)
+      - `patch`, `minor` and `major`.
+      - It will use your current crate version as a baseline.
+      - Keep in `none` if you only want the writing version.
+
+  3. Keep all with the defaults (without version and release_type = none)
+      - It will use your current crate version as a baseline.
+      - Run if you already update your crate version.
+      - Useful for testing when you already run the workflow.
   
 ## Dependabot
 
