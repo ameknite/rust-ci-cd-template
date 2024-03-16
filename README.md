@@ -135,7 +135,7 @@ This template includes a setup for dependabot and a workflow for auto-merge.
 
 ## Other workflows
 
-This template uses [workflow call](https://docs.github.com/en/actions/using-workflows/reusing-workflows) and [workflow dispatch](https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow) to reuse workflows and be able to run them individually. So you can run various jobs of the ci/ci workflow independently.
+This template uses [workflow call](https://docs.github.com/en/actions/using-workflows/reusing-workflows) and [workflow dispatch](https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow) to reuse workflows and be able to run them individually. So you can run various jobs of the ci/cd workflows independently.
 
 Some workflows to consider:
 
