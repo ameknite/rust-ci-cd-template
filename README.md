@@ -32,8 +32,8 @@ It will run:
 - [cargo deny](https://github.com/EmbarkStudios/cargo-deny):
   - Check for licenses, bans, advisories and sources.
   - Check for the [deny.toml](./deny.toml) file.
-  - template: <https://github.com/EmbarkStudios/cargo-deny/blob/main/deny.template.toml>
-  - docs: <https://embarkstudios.github.io/cargo-deny/>
+  - [template](https://github.com/EmbarkStudios/cargo-deny/blob/main/deny.template.toml)
+  - [docs](https://embarkstudios.github.io/cargo-deny/)
 - [cargo audit](https://crates.io/crates/cargo-audit):
   - Check for security vulnerabilities.
   - Uses the [advisory-db](https://github.com/RustSec/advisory-db/)
@@ -41,7 +41,7 @@ It will run:
 
 ## CD Workflow
 
-[build_and_release](./.github/workflows/build_and_release.yaml)
+[build_and_release.yaml](./.github/workflows/build_and_release.yaml)
 
 This workflow will only run manually through GitHub.
 
@@ -58,7 +58,7 @@ It will:
   - Check for the [NOTICEe file](./NOTICE).
   - Auto-commit.
 - Run [cargo-bump](https://crates.io/crates/cargo-bump):
-  - Bump the current version of the Cargo.toml
+  - Bump the current version of the Cargo.toml file.
   - Uses the input version if provided.
   - Auto-commit.
 - Run [cargo-attributions](https://crates.io/crates/cargo-attribution):
@@ -73,18 +73,19 @@ It will:
   - Uses [create-gh-release-action](https://github.com/taiki-e/create-gh-release-action/tree/v1/)
   - Includes your changelog if matches the same version.
   - Uses the created tag as a reference.
-- Build and Release in Github
+- Build and Release in Github:
   - Using [upload-rust-binary-action](https://www.github.com/taiki-e/upload-rust-binary-action/tree/v1/)
   - And [setup-cross-toolchain-action](https://github.com/taiki-e/setup-cross-toolchain-action/tree/v1/)
   - Only builds if your crate contains a binary crate.
   - Uses the created tag as a reference.
   - Bundle the attribution folder with licenses and notices.
   - Create checksum with sha256.
-  - It builds for linux: gnu (x86_64|aarch64) and musl (x86_64|aarch64)
-  - It builds for windows: msvc (x86_64|aarch64) and gnu (x86_64)
-  - It builds for mac-os (x86_64|aarch64)
+  - It builds for linux: gnu (x86_64|aarch64) and musl (x86_64|aarch64).
+  - It builds for windows: msvc (x86_64|aarch64) and gnu (x86_64).
+  - It builds for mac-os (x86_64|aarch64).
 - Publish the create to crates.io:
-  - Only if you have the secrets.CARGO_REGISTRY_TOKEN setup
+  - Only if you have the secrets.CARGO_REGISTRY_TOKEN variable added to repository secrets.
+  - Path: Settings -> Security -> Secrets and variables -> Actions -> Repository secrets.
 
 ### How to use the Build and Release workflow
 
@@ -102,14 +103,14 @@ Here you can do three things to run the workflow:
     - Keep in `none` if you only want the writing version.
   3. Keep all with the defaults (without version and release_type = none)
     - It will use your current crate version as a baseline.
-    - Run if you already update your crate version
+    - Run if you already update your crate version.
     - Useful for testing when you already run the workflow.
   
 ## Dependabot
 
 This template includes a setup for dependabot and a workflow for auto-merge.
 
-- It will update packages for cargo and github-actions weekly
+- It will update packages for cargo and github-actions weekly.
 
 - For rust:
   - It will create pull request in groups.
@@ -139,11 +140,11 @@ Some workflows to consider:
   - To clean the caches generated for the workflows.
   - Run if you have problems with the cache.
 - [add_notice.yaml](./.github/workflows/add_notice.yaml)
-  - To replace and update your notices
+  - To replace and update your notices.
   - To apply notices to other kind of files.
   - To use different comment styles.
 - [publish.yaml](./.github/workflows/publish.yaml)
-  - To publish your crate to crates.io
+  - To publish your crate to crates.io.
 
 ## What to change if you want  to use this template
 
@@ -153,7 +154,7 @@ Some workflows to consider:
 and [LICENSE-Apache-2.0](./LICENSE-Apache-2.0).
 - Change the [deny.toml](./deny.toml) file.
 - Change the [NOTICE](./NOTICE) file:
-  - Remove the notice in [main.rs](./deny.toml)
+  - Remove the notice in [main.rs](./deny.toml).
   - Or you can run add-notice --remove before you update the NOTICE file.
 
 ## LICENSE
@@ -162,6 +163,6 @@ SPDX-License-Identifier: CC0-1.0 OR MIT OR Apache-2.0
 
 Licensed under a triple license at your option:
 
-- [CC0-1.0](LICENSE-CC0-1.0) license
-- [MIT](LICENSE-MIT) license
-- [Apache-2.0](LICENSE-Apache-2.0) license
+- [CC0-1.0](LICENSE-CC0-1.0) license.
+- [MIT](LICENSE-MIT) license.
+- [Apache-2.0](LICENSE-Apache-2.0) license.
