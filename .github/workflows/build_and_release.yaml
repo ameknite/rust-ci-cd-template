@@ -29,10 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions-ecosystem/action-regex-match@v2
+      - uses: arturo-ojeda/action-regex-match@v2.0.5-arturo
         id: regex-match
         with:
-          text: ${{ inputs.version }}
+          text: ${{ inputs.version }}re
           regex: '^v(\d+)\.(\d+)\.(\d+)-?(\w*)\+?(\d*)$'
 
       - name: Fail if don't match regex
