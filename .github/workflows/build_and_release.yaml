@@ -18,6 +18,8 @@ on:
           - patch
           - minor
           - major
+      check-to-publish:
+        type: boolean
       update-msrv:
         type: boolean
 
@@ -226,5 +228,6 @@ jobs:
 
   publish-crate:
     needs: [create-tag]
+    if: ${{ inputs.check-to-publish }}
     uses: ./.github/workflows/publish.yaml
     secrets: inherit
