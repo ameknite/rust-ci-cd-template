@@ -43,8 +43,8 @@ It will run:
 
 ## CD Workflow
 
-![CD-1](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/66cd37c6-b330-435f-b79b-f7591441c3bd)
-![CD-2](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/72871b54-71d4-415e-aa43-844ace005d7c)
+![CD-1](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/91840ec0-8cfc-480c-b5eb-a267c10e4bc2)
+![CD-2](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/c553c366-2eeb-4d5e-804e-dca20b68bd42)
 
 [build_and_release.yaml](./.github/workflows/build_and_release.yaml)
 
