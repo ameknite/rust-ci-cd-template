@@ -91,6 +91,8 @@ It will:
 
 You will run this directly in your Github repo -> Section `Actions` -> `[Main] Build & Release` workflow. -> `Run workflow` button.
 
+![Screenshot 2024-03-16 at 00 21 02](https://github.com/ameknite/rust_ci_cd_template/assets/104745335/ca292039-749b-44a2-be29-7f8e77fb6741)
+
 Here you can do three things to run the workflow:
 
   1. Write the new version you want to release:
@@ -101,7 +103,9 @@ Here you can do three things to run the workflow:
     - `patch`, `minor` and `major`.
     - It will use your current crate version as a baseline.
     - Keep in `none` if you only want the writing version.
-  3. Keep all with the defaults (without version and release_type = none)
+     ![Screenshot 2024-03-16 at 02 12 01](https://github.com/ameknite/rust_ci_cd_template/assets/104745335/57a4215d-e297-48ce-abbe-9c2d471837dd)
+
+  4. Keep all with the defaults (without version and release_type = none)
     - It will use your current crate version as a baseline.
     - Run if you already update your crate version.
     - Useful for testing when you already run the workflow.
