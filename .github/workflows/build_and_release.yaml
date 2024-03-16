@@ -1,4 +1,4 @@
-name: "[MAIN] Build & Release"
+name: "[A+] Build & Release"
 
 permissions:
   # To upload files to GitHub Releases

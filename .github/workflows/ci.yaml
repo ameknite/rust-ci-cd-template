@@ -1,4 +1,4 @@
-name: "[MAIN]: CI"
+name: "A+: CI"
 
 permissions:
   contents: write
