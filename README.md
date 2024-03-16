@@ -13,7 +13,7 @@ Template to maintain a rust project running CI/CD.
 
 [ci.yaml](./.github/workflows/ci.yaml)
 
-![CI](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/f91d6b30-d060-4ed1-b403-e2b3067839b8)
+![CI](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/bc501236-2c13-4cef-b651-d226816e4e64)
 
 This workflow will run every time you push to main or make a pull request. You can also run the workflow manually in github.
 
@@ -95,7 +95,7 @@ It will:
 
 You will run this directly in your Github repo -> Section `Actions` -> `[Main] Build & Release` workflow. -> `Run workflow` button.
 
-![Build and Release Workflow](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/4f45dec1-e2ab-4e36-ba68-57294bcd3191)
+![Build and Release Workflow](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/0735c267-dd4a-4397-a5bb-98172062e002)
 
 Here you can do three things to run the workflow:
 
@@ -105,7 +105,7 @@ Here you can do three things to run the workflow:
       - Example: 3.1.4-alpha+159
   2. Select the release_type you want:  
 
-     ![release_type](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/52598d62-9128-445a-ab83-68a4a924535d)
+![release-type](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/a224d958-3817-47d4-8b15-6995cbf8b090)
 
       - `patch`, `minor` and `major`.
       - It will use your current crate version as a baseline.
