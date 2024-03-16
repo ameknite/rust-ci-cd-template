@@ -1,0 +1,230 @@
+name: "[MAIN] Build & Release"
+
+permissions:
+  # To upload files to GitHub Releases
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: "Version: (e.g. -> v3.1.4-alpha+159)"
+      release_type:
+        type: choice
+        default: none
+        options:
+          - none
+          - patch
+          - minor
+          - major
+      update-msrv:
+        type: boolean
+
+jobs:
+  validate-input:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ inputs.version }}
+          regex: '^v(\d+)\.(\d+)\.(\d+)-?(\w*)\+?(\d*)$'
+
+      - name: Fail if don't match regex
+        if: ${{ inputs.version && steps.regex-match.outputs.match == '' }}
+        run: |
+          echo "${{inputs.version}} doesn't match regex. Use a version similar to v3.1.4-alpha+159"
+          exit 1;
+
+  get-version:
+    needs: validate-input
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install jql
+        if: ${{ !inputs.version }}
+        uses: taiki-e/install-action@v2
+        with:
+          tool: jql
+
+      - name: Install cargo-bump
+        if: ${{ !inputs.version }}
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-bump
+
+      - name: Current versions with None
+        id: current_version
+        if: ${{ !inputs.version && inputs.release_type == 'none' }}
+        run: |
+          version=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"version"<|[0]' --raw-string);
+          echo $version;
+          echo "current_version=$version" >> "$GITHUB_OUTPUT";
+          normal_version=v$version
+          echo $normal_version;
+          echo "normal_tag_version=$normal_version" >> "$GITHUB_OUTPUT";
+
+      - name: New versions using release_type
+        id: new_version
+        if: ${{ !inputs.version && inputs.release_type != 'none' }}
+        run: |
+          cargo bump ${{ inputs.release_type }};
+          version=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"version"<|[0]' --raw-string);
+          echo $version;
+          echo "new_version=$version" >> "$GITHUB_OUTPUT";
+          normal_version=v$version
+          echo $normal_version;
+          echo "normal_tag_version=$normal_version" >> "$GITHUB_OUTPUT";
+
+      - name: Versions using tag
+        id: full_version
+        if: inputs.version
+        run: |
+          tag=${{inputs.version}};
+          echo $tag;
+          echo "normal_crate_version=${tag##v} >> GITHUB_OUTPUT";
+          echo ${tag##v};
+
+    outputs:
+      tag_version: ${{ inputs.version || steps.new_version.outputs.normal_tag_version || steps.current_version.outputs.normal_tag_version }}
+      crate_version: ${{ steps.full_version.outputs.normal_crate_version || steps.new_version.outputs.new_version || steps.current_version.outputs.current_version }}
+
+  pre-release:
+    needs: get-version
+    uses: ./.github/workflows/pre_release.yaml
+    with:
+      version: ${{ needs.get-version.outputs.crate_version }}
+      update-msrv: ${{ inputs.update-msrv }}
+
+  create-tag:
+    needs: [get-version, pre-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - run: git pull
+
+      - uses: mukunku/tag-exists-action@v1.6.0
+        id: check-tag
+        with:
+          tag: ${{  needs.get-version.outputs.tag_version }}
+
+      - name: Create tag
+        if: steps.check-tag.outputs.exists == 'false'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git tag ${{ needs.get-version.outputs.tag_version }}
+          git push origin ${{  needs.get-version.outputs.tag_version }}
+
+  create-release:
+    needs: [get-version, create-tag]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          changelog: CHANGELOG.md
+          allow-missing-changelog: true
+          ref: refs/tags/${{ needs.get-version.outputs.tag_version }}
+
+  check-if-bin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install jql
+        uses: taiki-e/install-action@v2
+        with:
+          tool: jql
+
+      - name: Searching for bin
+        id: searching
+        run: |
+          result=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"targets"<|[0]|>"kind"' | jql '..' -i);
+          echo "targets=$result" >> "$GITHUB_OUTPUT";
+          echo kind of targets $result;
+
+      - name: print if skip upploading binaries to github release
+        if: ${{ !contains(steps.searching.outputs.targets, 'bin') }}
+        run: echo "This job avoid publishing binaries to github releases for libraries crates"
+
+    outputs:
+      is_bin: ${{ contains(steps.searching.outputs.targets, 'bin') }}
+
+  build-and-release:
+    needs: [get-version, create-release, check-if-bin]
+    if: ${{ needs.check-if-bin.outputs.is_bin == 'true' }}
+    name: ${{ matrix.target }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, target: x86_64-unknown-linux-gnu, cross: false}
+          - {os: ubuntu-latest, target: x86_64-unknown-linux-musl, cross: true}
+          - {os: ubuntu-latest, target: aarch64-unknown-linux-gnu, cross: true}
+          - {os: ubuntu-latest, target: aarch64-unknown-linux-musl, cross: true}
+
+          - {os: windows-latest, target: x86_64-pc-windows-msvc, cross: false}
+          - {os: windows-latest, target: x86_64-pc-windows-gnu, cross: true}
+          - {os: windows-latest, target: aarch64-pc-windows-msvc, cross: false}
+          
+          - {os: macos-latest, target: x86_64-apple-darwin, cross: false}
+          - {os: macos-latest, target: aarch64-apple-darwin, cross: false}
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get sha-commit from tag
+        id: get_baseline_sha
+        shell: bash
+        run: |
+          latest_sha=$(git rev-list --tags --max-count=1)
+          echo "sha_tag=$latest_sha" >> "$GITHUB_OUTPUT";
+
+      - name: Checkout source code to specific tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.get_baseline_sha.outputs.sha_tag }}
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools
+        if: ${{ matrix.cross }} == 'true'
+        uses: taiki-e/setup-cross-toolchain-action@v1
+        with:
+          target: ${{ matrix.target }}
+
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: ${{ github.event.repository.name }}
+          target: ${{ matrix.target }}
+          include: attribution
+          archive: $bin-$tag-$target
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: refs/tags/${{  needs.get-version.outputs.tag_version }}
+          checksum: sha256
+
+  publish-crate:
+    needs: [create-tag]
+    uses: ./.github/workflows/publish.yaml
+    secrets: inherit

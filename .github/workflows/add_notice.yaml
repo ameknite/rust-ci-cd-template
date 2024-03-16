@@ -1,0 +1,87 @@
+name: Add Notice
+
+permissions:
+  contents: write
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        type: string
+        description: Replace notice with this message
+      notice_path:
+        type: string
+        description: Path to the notice file
+      extensions:
+        type: string
+        description: Apply notice by extensions, e.g. rs,js,kt.
+      comment_styles:
+        type: string
+        description: Comment Styles, e.g. //,#,//
+      commit_message:
+        type: string
+  workflow_dispatch:
+    inputs:
+      message:
+        type: string
+        description: Replace notice with this message
+      notice_path:
+        type: string
+        description: Path to the notice file
+      extensions:
+        type: string
+        description: Apply notice by extensions, e.g. rs,js,kt.
+      comment_styles:
+        type: string
+        description: Comment Styles, e.g. //,#,//
+
+jobs:
+  check-notice-existence:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: "Check file existence"
+        id: check-files
+        uses: andstor/file-existence-action@v3
+        with:
+          files: ${{ inputs.notice_path || './NOTICE' }}
+
+      - name: print if skip add-notice
+        if: steps.check-files.outputs.files_exists
+        run: echo "add-notice needs a ${{ inputs.notice_path || './NOTICE'}} file"
+
+    outputs:
+      notice_exist: ${{ steps.check-files.outputs.files_exists }}
+
+  add-notice:
+    needs: check-notice-existence
+    if: ${{ needs.check-notice-existence.outputs.notice_exist == 'true'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - run: git pull
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install add-notice
+        uses: taiki-e/install-action@v2
+        with:
+          tool: add-notice
+
+      - name: Run add-notice
+        if: ${{ inputs.message == '' }}
+        run: add-notice --notice ${{ inputs.notice_path || './NOTICE' }} -e ${{ inputs.extensions || 'rs' }} -c ${{ inputs.comment_styles || '//' }}
+      
+      - name: Replace notice
+        if: ${{ inputs.message }}
+        run: add-notice --notice ${{ inputs.notice_path || './NOTICE' }} --replace-with-string ${{ inputs.message }} -e ${{ inputs.extensions || 'rs' }} -c ${{ inputs.comment_styles || '//' }}
+      
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[${{ inputs.commit_message || 'Manual run' }}] Add Notice to New Files"

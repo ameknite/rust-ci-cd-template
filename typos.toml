@@ -1,0 +1,11 @@
+# https://github.com/crate-ci/typos/blob/master/docs/reference.md
+
+[files]
+extend-exclude = []
+
+[default.extend-identifiers]
+
+[default.extend-words]
+
+[default]
+extend-ignore-identifiers-re = []

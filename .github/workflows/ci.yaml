@@ -1,0 +1,123 @@
+name: "[MAIN]: CI"
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  cargo-build:
+    name: Cargo Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: cargo build
+        run: cargo b
+
+  cargo-fmt:
+    name: Cargo fmt
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+
+      - name: Rustfmt Check
+        uses: actions-rust-lang/rustfmt@v1
+
+  cargo-clippy:
+    name: Cargo clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: clippy
+
+      - name: Clippy Check
+        run: cargo clippy
+
+  cargo-test:
+    name: Cargo test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Cargo test
+        run: cargo test
+
+  typos-cli:
+    name: typos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install Typos
+        uses: taiki-e/install-action@v2
+        with:
+          tool: typos-cli
+
+      - name: run typos
+        run: typos
+
+  taplo-toml-fmt:
+    
+    name: taplo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install Taplo
+        uses: taiki-e/install-action@v2
+        with:
+          tool: taplo-cli
+
+      - name: Run Taplo
+        id: taplo
+        run: taplo fmt --check --diff
+
+  markdownlint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Fetch Repository
+      uses: actions/checkout@v4
+
+    - name: markdownlint-cli2-action
+      uses: DavidAnson/markdownlint-cli2-action@v15
+      with:
+        globs: '**/*.md'
+            
+  cargo-deny:
+    uses: ./.github/workflows/cargo_deny.yaml
+
+  check-msrv:
+    uses: ./.github/workflows/msrv.yaml

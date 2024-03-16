@@ -1,0 +1,102 @@
+name: Cargo Semver Checks
+
+on:
+  workflow_call:
+    inputs:
+      bump-version:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      bump-version:
+        description: "Bump version: (e.g. -> 3.6.1)"
+        type: string
+      release_type:
+        type: choice
+        default: none
+        options:
+          - none
+          - patch
+          - minor
+          - major
+
+jobs:
+  check-if-lib:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install jql
+        uses: taiki-e/install-action@v2
+        with:
+          tool: jql
+
+      - name: Searching for lib
+        id: searching
+        run: |
+          result=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"targets"<|[0]|>"kind"' | jql '..' -i);
+          echo "targets=$result" >> "$GITHUB_OUTPUT";
+          echo kind of targets $result;
+
+      - name: print if skip cargo-semver-checks
+        if: ${{ !contains(steps.searching.outputs.targets, 'lib') }}
+        run: echo "cargo semver-check only works in libraries"
+
+    outputs:
+      is_lib: ${{ contains(steps.searching.outputs.targets, 'lib') }}
+
+  get-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest sha-commit from previous tag
+        id: get_baseline_sha
+        run: |
+          latest_sha=$(git rev-list --tags --max-count=1)
+          echo $latest_sha
+          echo "baseline=$latest_sha" >> "$GITHUB_OUTPUT";
+
+      - name: print if skip cargo-semver-checks
+        if: ${{ steps.get_baseline_sha.outputs.baseline == '' }}
+        run: echo "semver-checks needs a baseline. The baseline is the latest commit of the previous tag"
+    outputs:
+      baseline: ${{ steps.get_baseline_sha.outputs.baseline }}
+
+  cargo-semver-checks:
+    needs: [check-if-lib, get-baseline]
+    if: ${{ needs.check-if-lib.outputs.is_lib == 'true' && needs.get-baseline.outputs.baseline != ''}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install cargo-bump
+        if: ${{ inputs.bump-version || inputs.release_type != 'none' }}
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-bump
+
+      - name: Run cargo bump
+        if: ${{ inputs.bump-version || inputs.release_type != 'none'}}
+        run: cargo bump ${{ inputs.bump-version || inputs.release_type}}
+      
+      - name: Install cargo-semver-checks
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-semver-checks
+
+      - name: Run cargo-semver-checks
+        run: cargo semver-checks --baseline-rev ${{ needs.get-baseline.outputs.baseline }};

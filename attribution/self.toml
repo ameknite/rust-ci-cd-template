@@ -1,0 +1,8 @@
+[self]
+name = "rust_cicd_template"
+version = "0.1.0"
+description = "A rust ci/cd template for github"
+license = "CC0-1.0 OR MIT OR Apache-2.0"
+notices = [
+  "(c) You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and",
+]
