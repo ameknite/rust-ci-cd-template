@@ -13,6 +13,8 @@ Template to maintain a rust project running CI/CD.
 
 [ci.yaml](./.github/workflows/ci.yaml)
 
+![CI](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/f91d6b30-d060-4ed1-b403-e2b3067839b8)
+
 This workflow will run every time you push to main or make a pull request. You can also run the workflow manually in github.
 
 It will run:
@@ -93,7 +95,7 @@ It will:
 
 You will run this directly in your Github repo -> Section `Actions` -> `[Main] Build & Release` workflow. -> `Run workflow` button.
 
-![Screenshot 2024-03-16 at 00 21 02](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/ca292039-749b-44a2-be29-7f8e77fb6741)
+![Build and Release Workflow](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/4f45dec1-e2ab-4e36-ba68-57294bcd3191)
 
 Here you can do three things to run the workflow:
 
@@ -103,12 +105,13 @@ Here you can do three things to run the workflow:
       - Example: 3.1.4-alpha+159
   2. Select the release_type you want:  
 
-      ![Screenshot 2024-03-16 at 02 12 01](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/57a4215d-e297-48ce-abbe-9c2d471837dd)
+     ![release_type](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/52598d62-9128-445a-ab83-68a4a924535d)
+
       - `patch`, `minor` and `major`.
       - It will use your current crate version as a baseline.
       - Keep in `none` if you only want the writing version.
 
-  3. Keep all with the defaults (without version and release_type = none)
+  4. Keep all with the defaults (without version and release_type = none)
       - It will use your current crate version as a baseline.
       - Run if you already update your crate version.
       - Useful for testing when you already run the workflow.
