@@ -26,7 +26,9 @@ It will run:
   - Check for the [typos.toml](./typos.toml) file.
   - docs: <https://github.com/crate-ci/typos/blob/master/docs/reference.md>
 - [taplo fmt](https://taplo.tamasfe.dev/): Toml formatter.
-- [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2): Markdown linter and formatter.
+- [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2):
+  - Markdown linter and formatter.
+  - Check for the file [.markdownlint.yaml](./.markdownlint.yaml)
 - [cargo deny](https://github.com/EmbarkStudios/cargo-deny):
   - Check for licenses, bans, advisories and sources.
   - Check for the [deny.toml](./deny.toml) file.
