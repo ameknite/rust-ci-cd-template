@@ -154,6 +154,8 @@ Some workflows to consider:
   - To replace and update your notices.
   - To apply notices to other kind of files.
   - To use different comment styles.
+- [pre_release.yaml](./.github/workflows/pre_release.yaml)
+  - run ci, cargo-semver-checks, add-notice, bump-version and update-attribution
 - [publish.yaml](./.github/workflows/publish.yaml)
   - To publish your crate to crates.io.
 
