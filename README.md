@@ -42,6 +42,8 @@ It will run:
 - [cargo msrv](https://github.com/foresterre/cargo-msrv): Keep the rustc version on check.
 
 ## CD Workflow
+![CD-1](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/66cd37c6-b330-435f-b79b-f7591441c3bd)
+![CD-2](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/72871b54-71d4-415e-aa43-844ace005d7c)
 
 [build_and_release.yaml](./.github/workflows/build_and_release.yaml)
 
