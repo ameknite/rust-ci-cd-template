@@ -43,7 +43,7 @@ It will run:
 
 [build_and_release](./.github/workflows/build_and_release.yaml)
 
-This workflow will only run manually throw github.
+This workflow will only run manually through GitHub.
 
 It will:
 
@@ -61,7 +61,7 @@ It will:
   - Bump the current version of the Cargo.toml
   - Uses the input version if provided.
   - Auto-commit.
-- Run [cargo-attributions](https://crates.io/crates/cargo-attribution)
+- Run [cargo-attributions](https://crates.io/crates/cargo-attribution):
   - Comply with licenses distribution.
   - Add licenses, notices and metadata of your dependencies.
   - Crate an [attribution folder](./attribution/)
@@ -152,7 +152,7 @@ Some workflows to consider:
 - Change the licenses files. Right now uses [LICENSE-CC0-1.0](./LICENSE-CC0-1.0), [LICENSE-MIT](./LICENSE-MIT)
 and [LICENSE-Apache-2.0](./LICENSE-Apache-2.0).
 - Change the [deny.toml](./deny.toml) file.
-- Change the [NOTICE] file:
+- Change the [NOTICE](./NOTICE) file:
   - Remove the notice in [main.rs](./deny.toml)
   - Or you can run add-notice --remove before you update the NOTICE file.
 
