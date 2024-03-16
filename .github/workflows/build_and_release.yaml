@@ -32,7 +32,7 @@ jobs:
       - uses: arturo-ojeda/action-regex-match@v2.0.5-arturo
         id: regex-match
         with:
-          text: ${{ inputs.version }}re
+          text: ${{ inputs.version }}
           regex: '^v(\d+)\.(\d+)\.(\d+)-?(\w*)\+?(\d*)$'
 
       - name: Fail if don't match regex
