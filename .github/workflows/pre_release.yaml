@@ -25,11 +25,13 @@ jobs:
     uses: ./.github/workflows/ci.yaml
 
   cargo-semver-checks:
+    needs: run-ci
     uses: ./.github/workflows/cargo_semver_checks.yaml
     with:
       bump-version: ${{ inputs.version  }}
 
   add-notice:
+    needs: run-ci
     uses: ./.github/workflows/add_notice.yaml
     with:
       commit_message: ${{  inputs.version }}

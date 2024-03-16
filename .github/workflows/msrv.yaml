@@ -83,6 +83,8 @@ jobs:
           regex: false
           include: "README.md"
 
+      - run: git pull
+
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
