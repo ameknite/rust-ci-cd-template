@@ -98,7 +98,7 @@ It will:
 
 You will run this directly in your Github repo -> Section `Actions` -> `[Main] Build & Release` workflow. -> `Run workflow` button.
 
-![Build and Release Workflow](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/0735c267-dd4a-4397-a5bb-98172062e002)
+![Build and Release Workflow](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/2c6235cb-def6-4cb6-ada8-d3d32523d097)
 
 Here you can do three things to run the workflow:
 
