@@ -1,6 +1,6 @@
 # Rust CI/CD template
 
-![License](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)
+![License](https://img.shields.io/badge/license-CC0--1.0%2FMIT%2FApache--2.0-blue.svg)
 [![Crates.io](https://img.shields.io/crates/v/rust-ci-cd-template.svg)](https://crates.io/crates/rust-ci-cd-template)
 ![Minimum Supported Rust Version](https://img.shields.io/badge/MSRV-1.56.1+-red.svg)
 [![CI](https://github.com/ameknite/rust-ci-cd-template/actions/workflows/ci.yaml/badge.svg)](https://github.com/ameknite/rust-ci-cd-template/actions?workflow=CI)
