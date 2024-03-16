@@ -1,5 +1,5 @@
 [package]
-name = "rust_ci_cd_template"                     # todo!("Change name")
+name = "rust-ci-cd-template"                     # todo!("Change name")
 description = "A rust ci/cd template for github" # todo!("Change description")
 version = "0.1.0"
 edition = "2021"

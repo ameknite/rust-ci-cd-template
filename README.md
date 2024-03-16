@@ -1,9 +1,9 @@
 # Rust CI/CI template
 
 ![License](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)
-[![Crates.io](https://img.shields.io/crates/v/rust_ci_cd_template.svg)](https://crates.io/crates/rust_ci_cd_template)
+[![Crates.io](https://img.shields.io/crates/v/rust-ci-cd-template.svg)](https://crates.io/crates/rust-ci-cd-template)
 ![Minimum Supported Rust Version](https://img.shields.io/badge/MSRV-1.56.1+-red)
-[![CI](https://github.com/ameknite/rust_ci_cd_template/workflows/CI/badge.svg)](https://github.com/ameknite/rust_ci_cd_template/actions?workflow=CI)
+[![CI](https://github.com/ameknite/rust-ci-cd-template/workflows/CI/badge.svg)](https://github.com/ameknite/rust-ci-cd-template/actions?workflow=CI)
 
 Template to maintain a rust project running CI/CD.
 
@@ -93,7 +93,7 @@ It will:
 
 You will run this directly in your Github repo -> Section `Actions` -> `[Main] Build & Release` workflow. -> `Run workflow` button.
 
-![Screenshot 2024-03-16 at 00 21 02](https://github.com/ameknite/rust_ci_cd_template/assets/104745335/ca292039-749b-44a2-be29-7f8e77fb6741)
+![Screenshot 2024-03-16 at 00 21 02](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/ca292039-749b-44a2-be29-7f8e77fb6741)
 
 Here you can do three things to run the workflow:
 
@@ -103,7 +103,7 @@ Here you can do three things to run the workflow:
       - Example: 3.1.4-alpha+159
   2. Select the release_type you want:  
 
-      ![Screenshot 2024-03-16 at 02 12 01](https://github.com/ameknite/rust_ci_cd_template/assets/104745335/57a4215d-e297-48ce-abbe-9c2d471837dd)
+      ![Screenshot 2024-03-16 at 02 12 01](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/57a4215d-e297-48ce-abbe-9c2d471837dd)
       - `patch`, `minor` and `major`.
       - It will use your current crate version as a baseline.
       - Keep in `none` if you only want the writing version.
