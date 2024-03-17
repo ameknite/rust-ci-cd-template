@@ -15,13 +15,19 @@ Template to maintain a rust project running CI/CD.
 
 ![CI](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/bc501236-2c13-4cef-b651-d226816e4e64)
 
-This workflow will run every time you push to main or make a pull request. You can also run the workflow manually in github.
+This workflow will run every time you push to main or make a pull request.
+You can also run the workflow manually in github.
 
 It will run:
 
 - cargo build: Compiling for ubuntu-latest.
-- cargo [fmt](https://github.com/rust-lang/rustfmt): Rust Formatter.
-- cargo [clippy](https://github.com/rust-lang/rust-clippy): Lints.
+- cargo [fmt](https://github.com/rust-lang/rustfmt):
+  - Rust Formatter.
+  - Check for the file [rustfmt.toml](./rustfmt.toml).
+- cargo [clippy](https://github.com/rust-lang/rust-clippy):
+  - Lints catch common mistakes and improve your Rust code.
+  - Check for the sections `[lints.rust]` and `[linsts.clippy]`
+    in the [Cargo.toml file](./Cargo.toml).
 - cargo test: Execute unit and integration tests.
 - [typos](https://crates.io/crates/typos):
   - Source code spell checker.
@@ -39,7 +45,8 @@ It will run:
 - [cargo audit](https://crates.io/crates/cargo-audit):
   - Check for security vulnerabilities.
   - Uses the [advisory-db](https://github.com/RustSec/advisory-db/)
-- [cargo msrv](https://github.com/foresterre/cargo-msrv): Keep the rustc version on check.
+- [cargo msrv](https://github.com/foresterre/cargo-msrv):
+  Keep the rustc version on check.
 
 ## CD Workflow
 

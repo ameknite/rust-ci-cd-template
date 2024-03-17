@@ -17,3 +17,22 @@ lto = true
 opt-level = "z"
 panic = "abort"
 strip = true
+
+[lints.rust]
+# https://doc.rust-lang.org/rustc/lints/listing/allowed-by-default.html#allowed-by-default-lints
+unsafe_code = "warn"
+unsafe_op_in_unsafe_fn = "warn"
+missing-abi = "warn"
+missing_docs = "warn"
+
+[lints.clippy]
+# https://rust-lang.github.io/rust-clippy/master/
+# pedantic
+pedantic = "warn"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+
+# restriction
+undocumented_unsafe_blocks = "warn"
+multiple_unsafe_ops_per_block = "warn"
