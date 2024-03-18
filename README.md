@@ -176,6 +176,7 @@ and [LICENSE-Apache-2.0](./LICENSE-Apache-2.0).
 - Change the [NOTICE](./NOTICE) file:
   - Remove the notice in [main.rs](./deny.toml).
   - Or you can run add-notice --remove before you update the NOTICE file.
+- Change the [FUNDING.yaml](./.github/FUNDING.yaml) file.
 
 ## LICENSE
 
