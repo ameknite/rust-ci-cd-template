@@ -29,6 +29,7 @@ It will run:
   - Check for the sections `[lints.rust]` and `[linsts.clippy]`
     in the [Cargo.toml file](./Cargo.toml).
 - cargo test: Execute unit and integration tests.
+- [cargo miri](https://github.com/rust-lang/miri) test: Help to detect certain classes of [undefined behavior](https://doc.rust-lang.org/reference/behavior-considered-undefined.html).
 - [typos](https://crates.io/crates/typos):
   - Source code spell checker.
   - Check for the [typos.toml](./typos.toml) file.
