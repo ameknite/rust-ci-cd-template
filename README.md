@@ -94,7 +94,7 @@ It will:
   - Uses the created tag as a reference.
   - Bundle the attribution folder with licenses and notices.
   - Create checksum with sha256.
-  - It builds for linux: gnu (x86_64|aarch64) and musl (x86_64|aarch64).
+  - It builds for linux: gnu (x86_64|aarch64|riscv64gc) and musl (x86_64|aarch64).
   - It builds for windows: msvc (x86_64|aarch64) and gnu (x86_64).
   - It builds for mac-os (x86_64|aarch64).
 - Publish the create to crates.io:
