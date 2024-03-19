@@ -178,6 +178,12 @@ and [LICENSE-Apache-2.0](./LICENSE-Apache-2.0).
   - Or you can run add-notice --remove before you update the NOTICE file.
 - Change the [FUNDING.yaml](./.github/FUNDING.yaml) file.
 
+## Similar projects that might help you
+
+[cargo-dist](https://github.com/axodotdev/cargo-dist?tab=readme-ov-file)
+[release-plz](https://github.com/MarcoIeni/release-plz)
+[cargo-smart-release](https://github.com/Byron/cargo-smart-release)
+
 ## LICENSE
 
 SPDX-License-Identifier: CC0-1.0 OR MIT OR Apache-2.0
