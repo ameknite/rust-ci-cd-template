@@ -24,7 +24,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: cargo build
-        run: cargo b
+        run: cargo b --workspace --all-targets --all-features
 
   cargo-fmt:
     name: Cargo fmt
@@ -40,7 +40,7 @@ jobs:
           components: rustfmt
 
       - name: Rustfmt Check
-        uses: actions-rust-lang/rustfmt@v1
+        run: cargo fmt --all --check
 
   cargo-clippy:
     name: Cargo clippy
@@ -56,7 +56,7 @@ jobs:
           components: clippy
 
       - name: Clippy Check
-        run: cargo clippy
+        run: cargo clippy --workspace --all-targets --all-features -- -Dwarnings 
 
   cargo-test:
     name: Cargo test
@@ -70,7 +70,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: Cargo test
-        run: cargo test
+        run: cargo test --workspace --all-targets --all-features
 
   cargo-miri-test:
     name: Cargo miri
@@ -90,7 +90,7 @@ jobs:
           cargo miri setup;
 
       - name: Test with Miri
-        run: cargo miri test 
+        run: cargo miri test --workspace --all-targets --all-features
 
   typos-cli:
     name: typos
