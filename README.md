@@ -13,7 +13,7 @@ Template to maintain a rust project running CI/CD with Github Workflows.
 
 [ci.yaml](./.github/workflows/ci.yaml)
 
-![CI](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/bc501236-2c13-4cef-b651-d226816e4e64)
+![CI](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/6b68fa15-3ac6-4074-88a4-231d1e5bb413)
 
 This workflow will run every time you push to main or make a pull request.
 You can also run the workflow manually in github.
