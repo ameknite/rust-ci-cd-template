@@ -181,9 +181,9 @@ and [LICENSE-Apache-2.0](./LICENSE-Apache-2.0).
 
 ## Similar projects that might help you
 
-[cargo-dist](https://github.com/axodotdev/cargo-dist?tab=readme-ov-file)
-[release-plz](https://github.com/MarcoIeni/release-plz)
-[cargo-smart-release](https://github.com/Byron/cargo-smart-release)
+- [cargo-dist](https://github.com/axodotdev/cargo-dist?tab=readme-ov-file).
+- [release-plz](https://github.com/MarcoIeni/release-plz).
+- [cargo-smart-release](https://github.com/Byron/cargo-smart-release).
 
 ## LICENSE
 
