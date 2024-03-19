@@ -5,7 +5,7 @@
 [![Minimum Supported Rust Version](https://img.shields.io/badge/MSRV-1.59.0+-red.svg)](./Cargo.toml#L8)
 [![CI](https://github.com/ameknite/rust-ci-cd-template/actions/workflows/ci.yaml/badge.svg)](https://github.com/ameknite/rust-ci-cd-template/actions?workflow=CI)
 
-Template to maintain a rust project running CI/CD.
+Template to maintain a rust project running CI/CD with Github Actions.
 
 <!-- todo!(Change this file) -->
 
