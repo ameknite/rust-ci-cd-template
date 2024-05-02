@@ -1,11 +1,11 @@
 [package]
 name = "rust-ci-cd-template"                                   # todo!("Change name")
 description = "A rust ci/cd template for github"               # todo!("Change description")
-version = "0.1.7"
+version = "0.1.7"                                              # todo!("Change version")
 edition = "2021"
 license = "CC0-1.0 OR MIT OR Apache-2.0"                       # todo!("Change licenses")
-repository = "https://github.com/ameknite/rust-ci-cd-template"
-rust-version = "1.59.0"
+repository = "https://github.com/ameknite/rust-ci-cd-template" # todo!("Change repository")
+rust-version = "1.59.0"                                        # todo!("Change MSRV")
 
 [dependencies]
 
@@ -28,7 +28,7 @@ missing_docs = "warn"
 [lints.clippy]
 # https://rust-lang.github.io/rust-clippy/master/
 # pedantic
-pedantic = "warn"
+pedantic = { level = "warn", priority = -1 }
 must_use_candidate = "allow"
 missing_errors_doc = "allow"
 missing_panics_doc = "allow"
