@@ -155,7 +155,7 @@ Some workflows to consider:
   - This workflow includes a boolean to able to update your msrv.
     - It will run cargo-msrv to update your `rust-version` in Cargo.toml
     - If you uses the MSRV in your README.md it will also updated it.
-- [cache.yaml](./.github/workflows/msrv.yaml)
+- [cache.yaml](./.github/workflows/cache.yaml)
   - To clean the caches generated for the workflows.
   - Run if you have problems with the cache.
 - [add_notice.yaml](./.github/workflows/add_notice.yaml)
