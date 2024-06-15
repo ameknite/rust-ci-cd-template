@@ -182,6 +182,7 @@ and [LICENSE-Apache-2.0](./LICENSE-Apache-2.0).
 ## Similar projects that might help you
 
 - [cargo-dist](https://github.com/axodotdev/cargo-dist?tab=readme-ov-file).
+- [cargo-release](https://github.com/crate-ci/cargo-release).
 - [release-plz](https://github.com/MarcoIeni/release-plz).
 - [cargo-smart-release](https://github.com/Byron/cargo-smart-release).
 
