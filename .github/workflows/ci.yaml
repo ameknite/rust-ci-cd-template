@@ -188,6 +188,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
+          cache: false
 
       - name: Install yamlfmt
         run: go install github.com/google/yamlfmt/cmd/yamlfmt@latest
