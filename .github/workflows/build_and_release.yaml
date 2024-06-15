@@ -22,6 +22,17 @@ on:
         type: boolean
       update-msrv:
         type: boolean
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        description: "Version: (e.g. -> v3.1.4-alpha+159)"
+      release_type:
+        type: string
+      check-to-publish:
+        type: boolean
+      update-msrv:
+        type: boolean
 
 jobs:
   validate-input:
@@ -102,15 +113,36 @@ jobs:
       tag_version: ${{ inputs.version || steps.new_version.outputs.normal_tag_version || steps.current_version.outputs.normal_tag_version }}
       crate_version: ${{ steps.full_version.outputs.normal_crate_version || steps.new_version.outputs.new_version || steps.current_version.outputs.current_version }}
 
-  pre-release:
-    needs: get-version
-    uses: ./.github/workflows/pre_release.yaml
+  run-ci:
+    needs: validate-input
+    uses: ./.github/workflows/ci.yaml
+
+  cargo-semver-checks:
+    needs: [run-ci, get-version]
+    uses: ./.github/workflows/cargo_semver_checks.yaml
     with:
-      version: ${{ needs.get-version.outputs.crate_version }}
-      update-msrv: ${{ inputs.update-msrv }}
+      bump-version: ${{ needs.get-version.outputs.crate_version }}
+
+  add-notice:
+    needs: [run-ci, get-version]
+    uses: ./.github/workflows/add_notice.yaml
+    with:
+      commit_message: ${{  needs.get-version.outputs.crate_version }}
+
+  bump-version:
+    needs: [cargo-semver-checks, get-version]
+    uses: ./.github/workflows/bump_version.yaml
+    with:
+      crate-version: ${{  needs.get-version.outputs.crate_version }}
+
+  update-attribution:
+    needs: [bump-version, get-version]
+    uses: ./.github/workflows/update_attributions.yaml
+    with:
+      commit_message: ${{ needs.get-version.outputs.crate_version }}
 
   create-tag:
-    needs: [get-version, pre-release]
+    needs: [get-version, update-attribution]
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository
@@ -191,10 +223,9 @@ jobs:
           - {os: windows-latest, target: x86_64-pc-windows-msvc, cross: false}
           - {os: windows-latest, target: x86_64-pc-windows-gnu, cross: true}
           - {os: windows-latest, target: aarch64-pc-windows-msvc, cross: false}
-          
+
           - {os: macos-latest, target: x86_64-apple-darwin, cross: false}
           - {os: macos-latest, target: aarch64-apple-darwin, cross: false}
-          
     steps:
       - name: Fetch Repository
         uses: actions/checkout@v4

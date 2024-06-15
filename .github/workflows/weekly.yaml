@@ -3,20 +3,8 @@ name: Weekly Checks
 on:
   schedule:
     - cron: "0 0 * * 6"
-
-permissions:
-  contents: write
+  workflow_dispatch:
 
 jobs:
   run-ci:
     uses: ./.github/workflows/ci.yaml
-
-  add-notice:
-    uses: ./.github/workflows/add_notice.yaml
-    with:
-      commit_message: "Weekly run"
-
-  update-attribution:
-    uses: ./.github/workflows/update_attributions.yaml
-    with:
-      commit_message: "Weekly run"

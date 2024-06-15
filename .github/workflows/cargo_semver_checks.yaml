@@ -22,32 +22,7 @@ on:
 
 jobs:
   check-if-lib:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Repository
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-
-      - name: Install jql
-        uses: taiki-e/install-action@v2
-        with:
-          tool: jql
-
-      - name: Searching for lib
-        id: searching
-        run: |
-          result=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"targets"<|[0]|>"kind"' | jql '..' -i);
-          echo "targets=$result" >> "$GITHUB_OUTPUT";
-          echo kind of targets $result;
-
-      - name: print if skip cargo-semver-checks
-        if: ${{ !contains(steps.searching.outputs.targets, 'lib') }}
-        run: echo "cargo semver-check only works in libraries"
-
-    outputs:
-      is_lib: ${{ contains(steps.searching.outputs.targets, 'lib') }}
+    uses: ./.github/workflows/check-if-lib.yaml
 
   get-baseline:
     runs-on: ubuntu-latest
@@ -92,7 +67,7 @@ jobs:
       - name: Run cargo bump
         if: ${{ inputs.bump-version || inputs.release_type != 'none'}}
         run: cargo bump ${{ inputs.bump-version || inputs.release_type}}
-      
+
       - name: Install cargo-semver-checks
         uses: taiki-e/install-action@v2
         with:

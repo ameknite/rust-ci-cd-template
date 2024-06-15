@@ -28,7 +28,9 @@ It will run:
   - Lints catch common mistakes and improve your Rust code.
   - Check for the sections `[lints.rust]` and `[linsts.clippy]`
     in the [Cargo.toml file](./Cargo.toml).
-- cargo test: Execute unit and integration tests.
+- cargo doc: Build the documentation.
+- cargo doc --test: Run tests in the documentation, only if the crate is a lib.
+- [cargo-nextest](https://nexte.st/): Execute unit and integration tests.
 - [cargo miri](https://github.com/rust-lang/miri) test: Help to detect certain classes of [undefined behavior](https://doc.rust-lang.org/reference/behavior-considered-undefined.html).
 - [typos](https://crates.io/crates/typos):
   - Source code spell checker.
@@ -38,6 +40,7 @@ It will run:
 - [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2):
   - Markdown linter and formatter.
   - Check for the file [.markdownlint.yaml](./.markdownlint.yaml)
+- [yamlfmt](https://github.com/google/yamlfmt/): Yaml formatter.
 - [cargo deny](https://github.com/EmbarkStudios/cargo-deny):
   - Check for licenses, bans, advisories and sources.
   - Check for the [deny.toml](./deny.toml) file.
@@ -61,9 +64,7 @@ This workflow will only run manually through GitHub.
 It will:
 
 - Validate your input version with regex (e.g. v3.1.4-alpha+159).
-
 - Run the ci workflow.
-
 - Run [cargo semver-checks](https://crates.io/crates/cargo-semver-checks):
   - Lint your crate API changes for semver violations.
   - This will only run if you crate is a library.
@@ -149,8 +150,9 @@ Some workflows to consider:
 
 - [weekly-workflow](./.github/workflows/weekly.yaml)
   - Run the ci workflow.
-  - Add notices to new files.
-  - Keep the licenses of your dependencies in sync with the dependabot updates.
+- [monthly-workflow](./.github/workflows/monthly.yaml)
+  - Run the build_and_release workflow.
+  - Do a patch release and publish to crates.io
 - [msrv.yaml](./.github/workflows/msrv.yaml)
   - This workflow includes a boolean to able to update your msrv.
     - It will run cargo-msrv to update your `rust-version` in Cargo.toml
@@ -162,8 +164,6 @@ Some workflows to consider:
   - To replace and update your notices.
   - To apply notices to other kind of files.
   - To use different comment styles.
-- [pre_release.yaml](./.github/workflows/pre_release.yaml)
-  - run ci, cargo-semver-checks, add-notice, bump-version and update-attribution
 - [publish.yaml](./.github/workflows/publish.yaml)
   - To publish your crate to crates.io.
 

@@ -18,7 +18,7 @@ jobs:
         if: ${{ steps.secret.outputs.token_exists == 'false' }}
         run: |
           echo "add secrets.CARGO_REGISTRY_TOKEN to your github repo";
-          
+
     outputs:
       secret_exists: ${{ steps.secret.outputs.token_exists }}
 

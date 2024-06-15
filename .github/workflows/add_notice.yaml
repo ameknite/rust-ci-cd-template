@@ -76,11 +76,11 @@ jobs:
       - name: Run add-notice
         if: ${{ inputs.message == '' }}
         run: add-notice --notice ${{ inputs.notice_path || './NOTICE' }} -e ${{ inputs.extensions || 'rs' }} -c ${{ inputs.comment_styles || '//' }}
-      
+
       - name: Replace notice
         if: ${{ inputs.message }}
         run: add-notice --notice ${{ inputs.notice_path || './NOTICE' }} --replace-with-string ${{ inputs.message }} -e ${{ inputs.extensions || 'rs' }} -c ${{ inputs.comment_styles || '//' }}
-      
+
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
