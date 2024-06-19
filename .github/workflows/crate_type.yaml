@@ -5,6 +5,8 @@ on:
     outputs:
       is_lib:
         value: ${{ jobs.check-if-lib.outputs.is_lib }}
+      is_bin:
+        value: ${{ jobs.check-if-lib.outputs.is_bin }}
 
 jobs:
   check-if-lib:
