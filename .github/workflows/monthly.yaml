@@ -12,5 +12,5 @@ jobs:
   build_and_release:
     uses: ./.github/workflows/build_and_release.yaml
     with:
-      release_type: none
-      check-to-publish: false
+      release_type: patch
+      check-to-publish: true
