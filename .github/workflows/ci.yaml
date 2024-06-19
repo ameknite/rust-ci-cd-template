@@ -1,7 +1,4 @@
-name: "A+: CI"
-
-permissions:
-  contents: write
+name: "CI"
 
 on:
   merge_group:
@@ -200,4 +197,4 @@ jobs:
     uses: ./.github/workflows/cargo_deny.yaml
 
   check-msrv:
-    uses: ./.github/workflows/msrv.yaml
+    uses: ./.github/workflows/check_msrv.yaml

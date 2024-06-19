@@ -1,4 +1,4 @@
-name: MSRV
+name: Update MSRV
 
 permissions:
   contents: write
@@ -6,46 +6,9 @@ permissions:
 on:
   workflow_call:
   workflow_dispatch:
-    inputs:
-      update-msrv:
-        type: boolean
 
 jobs:
-  check-msrv:
-    if: ${{ !inputs.update-msrv }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Repository
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-
-      - uses: cargo-bins/cargo-binstall@main
-
-      - name: Install cargo-msrv
-        # waiting for the stable release
-        run: cargo binstall cargo-msrv --version 0.16.0-beta.20 -y --force
-
-      - name: Get current msrv
-        id: data-msrv
-        run: |
-          current_msrv=$(cargo msrv show --output-format minimal);
-          echo "current msrv: $current_msrv";
-          echo "current=$current_msrv" >> "$GITHUB_OUTPUT";
-
-      - name: Run cargo msrv
-        run: cargo msrv verify --min ${{ steps.data-msrv.outputs.current }}
-
-      - name: echo msrv info
-        if: failure()
-        run: |
-          echo "current msrv: ${{ steps.data-msrv.outputs.current }}";
-          new_msrv=$(cargo msrv --output-format minimal);
-          echo "new msrv: $new_msrv";
-
   update-msrv:
-    if: inputs.update-msrv
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository

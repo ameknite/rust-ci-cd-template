@@ -1,4 +1,4 @@
-name: "A+ Build & Release"
+name: "Build & Release"
 
 permissions:
   # To upload files to GitHub Releases
@@ -20,8 +20,6 @@ on:
           - major
       check-to-publish:
         type: boolean
-      update-msrv:
-        type: boolean
   workflow_call:
     inputs:
       version:
@@ -30,8 +28,6 @@ on:
       release_type:
         type: string
       check-to-publish:
-        type: boolean
-      update-msrv:
         type: boolean
 
 jobs:
@@ -137,7 +133,7 @@ jobs:
 
   update-attribution:
     needs: [bump-version, get-version]
-    uses: ./.github/workflows/update_attributions.yaml
+    uses: ./.github/workflows/cargo_attribution.yaml
     with:
       commit_message: ${{ needs.get-version.outputs.crate_version }}
 

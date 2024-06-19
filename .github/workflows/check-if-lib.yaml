@@ -1,4 +1,4 @@
-name: Cargo If Lib
+name: Check if Lib
 
 on:
   workflow_call:

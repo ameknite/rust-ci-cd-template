@@ -1,4 +1,7 @@
-name: Weekly Checks
+name: Weekly Updates
+
+permissions:
+  contents: write
 
 on:
   schedule:
@@ -8,3 +11,30 @@ on:
 jobs:
   run-ci:
     uses: ./.github/workflows/ci.yaml
+
+  get-current-date:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get-date
+        run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+    outputs:
+      date: ${{ steps.get-date.outputs.date }}
+
+  run-add-notice:
+    needs: [get-current-date, run-ci]
+    uses: ./.github/workflows/add_notice.yaml
+    with:
+      commit_message: ${{ needs.get-current-date.outputs.date }}
+
+  run-cargo-update:
+    needs: [get-current-date, run-add-notice]
+    uses: ./.github/workflows/cargo_update.yaml
+    with:
+      commit_message: ${{ needs.get-current-date.outputs.date }}
+
+  run-cargo-attribution:
+    needs: [get-current-date, run-cargo-update]
+    uses: ./.github/workflows/cargo_attribution.yaml
+    with:
+      commit_message: ${{ needs.get-current-date.outputs.date }}
+

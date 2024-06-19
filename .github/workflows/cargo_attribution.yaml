@@ -1,0 +1,36 @@
+name: Update Attributions
+
+permissions:
+  contents: write
+
+on:
+  workflow_call:
+    inputs:
+      commit_message:
+        type: string
+  workflow_dispatch:
+
+jobs:
+  update-attributions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - run: git pull
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install cargo-attribution
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-attribution
+
+      - name: Run cargo attribution
+        run: cargo attribution
+
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[${{ inputs.commit_message || 'Manual run' }}]: Update Attributions"
