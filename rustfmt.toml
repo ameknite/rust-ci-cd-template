@@ -1,5 +1,13 @@
 # https://rust-lang.github.io/rustfmt/
-max_width = 80
 newline_style = "Unix"
+max_width = 80
 use_field_init_shorthand = true
 force_explicit_abi = true
+
+# Nightly
+# unstable_features = true
+# imports_granularity = "Crate"
+# wrap_comments = true
+# comment_width = 80
+# normalize_comments = true
+# format_code_in_doc_comments = true
