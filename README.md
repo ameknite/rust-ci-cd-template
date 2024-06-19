@@ -150,13 +150,13 @@ Some workflows to consider:
 
 - [weekly-workflow](./.github/workflows/weekly.yaml)
   - Run the ci workflow.
+  - Update Dependencies, Attributions and Notices.
 - [monthly-workflow](./.github/workflows/monthly.yaml)
   - Run the build_and_release workflow.
   - Do a patch release and publish to crates.io
-- [msrv.yaml](./.github/workflows/msrv.yaml)
-  - This workflow includes a boolean to able to update your msrv.
-    - It will run cargo-msrv to update your `rust-version` in Cargo.toml
-    - If you uses the MSRV in your README.md it will also updated it.
+- [update_msrv.yaml](./.github/workflows/update_msrv.yaml)
+  - It will run cargo-msrv to update your `rust-version` in Cargo.toml
+  - If you uses the MSRV in your README.md it will also updated it.
 - [cache.yaml](./.github/workflows/cache.yaml)
   - To clean the caches generated for the workflows.
   - Run if you have problems with the cache.
