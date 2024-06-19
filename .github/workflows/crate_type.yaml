@@ -1,4 +1,4 @@
-name: Check if Lib
+name: Crate Type
 
 on:
   workflow_call:
@@ -28,9 +28,6 @@ jobs:
           echo "targets=$result" >> "$GITHUB_OUTPUT";
           echo kind of targets $result;
 
-      - name: print if skip cargo-semver-checks
-        if: ${{ !contains(steps.searching.outputs.targets, 'lib') }}
-        run: echo "cargo semver-check only works in libraries"
-
     outputs:
       is_lib: ${{ contains(steps.searching.outputs.targets, 'lib') }}
+      is_bin: ${{ contains(steps.searching.outputs.targets, 'bin') }}

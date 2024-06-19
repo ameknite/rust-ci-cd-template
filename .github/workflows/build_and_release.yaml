@@ -174,32 +174,7 @@ jobs:
           ref: refs/tags/${{ needs.get-version.outputs.tag_version }}
 
   check-if-bin:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Repository
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-
-      - name: Install jql
-        uses: taiki-e/install-action@v2
-        with:
-          tool: jql
-
-      - name: Searching for bin
-        id: searching
-        run: |
-          result=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"targets"<|[0]|>"kind"' | jql '..' -i);
-          echo "targets=$result" >> "$GITHUB_OUTPUT";
-          echo kind of targets $result;
-
-      - name: print if skip upploading binaries to github release
-        if: ${{ !contains(steps.searching.outputs.targets, 'bin') }}
-        run: echo "This job avoid publishing binaries to github releases for libraries crates"
-
-    outputs:
-      is_bin: ${{ contains(steps.searching.outputs.targets, 'bin') }}
+    uses: ./.github/workflows/crate_type.yaml
 
   build-and-release:
     needs: [get-version, create-release, check-if-bin]
