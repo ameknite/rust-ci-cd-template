@@ -22,7 +22,7 @@ on:
 
 jobs:
   check-if-lib:
-    uses: ./.github/workflows/check-if-lib.yaml
+    uses: ./.github/workflows/crate_type.yaml
 
   get-baseline:
     runs-on: ubuntu-latest
