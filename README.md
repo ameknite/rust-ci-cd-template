@@ -115,18 +115,18 @@ Here you can do three things to run the workflow:
     - The version is in the form of:
       - Version parts: `${MAJOR}.${MINOR}.${PATCH}-${PRE-RELEASE}+${BUILD}`
       - Example: 3.1.4-alpha+159
-  2. Select the release_type you want:  
-      ![release-type](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/a224d958-3817-47d4-8b15-6995cbf8b090)
+  2. Select the release_type you want:
+      ![release-type](https://github.com/ameknite/rust-ci-cd-template/assets/104745335/5a503614-2418-44fa-ac84-f0eb051196dc)
       - `patch`, `minor` and `major`.
       - It will use your current crate version as a baseline.
       - Keep in `none` if you only want the writing version.
 
-  3. Keep all with the defaults (without version and release_type = none)
+  4. Keep all with the defaults (without version and release_type = none)
       - It will use your current crate version as a baseline.
       - Run if you already update your crate version.
       - Useful for testing when you already run the workflow.
 
-The two boolean allow you to publish your crate to creates.io and overwrite your tag to add modifications to a release, respectively.
+The two booleans allow you to publish your crate to creates.io and overwrite your tag to add modifications to a release, respectively.
   
 ## Dependabot
 
