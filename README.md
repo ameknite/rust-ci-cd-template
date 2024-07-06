@@ -125,6 +125,8 @@ Here you can do three things to run the workflow:
       - It will use your current crate version as a baseline.
       - Run if you already update your crate version.
       - Useful for testing when you already run the workflow.
+
+The two boolean allow you to publish your crate to creates.io and overwrite your tag to add modifications to a release, respectively.
   
 ## Dependabot
 
@@ -157,6 +159,8 @@ Some workflows to consider:
 - [update_msrv.yaml](./.github/workflows/update_msrv.yaml)
   - It will run cargo-msrv to update your `rust-version` in Cargo.toml
   - If you uses the MSRV in your README.md it will also updated it.
+- [cargo_semver_checks](./.github/workflows/cargo_semver_checks.yaml)
+  - Test semver violations before releasing.
 - [cache.yaml](./.github/workflows/cache.yaml)
   - To clean the caches generated for the workflows.
   - Run if you have problems with the cache.
