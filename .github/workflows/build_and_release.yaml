@@ -18,7 +18,9 @@ on:
           - patch
           - minor
           - major
-      check-to-publish:
+      publish:
+        type: boolean
+      overwrite-tag:
         type: boolean
   workflow_call:
     inputs:
@@ -27,7 +29,9 @@ on:
         description: "Version: (e.g. -> v3.1.4-alpha+159)"
       release_type:
         type: string
-      check-to-publish:
+      publish:
+        type: boolean
+      overwrite-tag:
         type: boolean
 
 jobs:
@@ -73,28 +77,28 @@ jobs:
         with:
           tool: cargo-bump
 
-      - name: Current versions with None
-        id: current_version
+      - name: Versions using None
+        id: none_version
         if: ${{ !inputs.version && inputs.release_type == 'none' }}
         run: |
           version=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"version"<|[0]' --raw-string);
           echo $version;
-          echo "current_version=$version" >> "$GITHUB_OUTPUT";
+          echo "crate_version=$version" >> "$GITHUB_OUTPUT";
           normal_version=v$version
           echo $normal_version;
-          echo "normal_tag_version=$normal_version" >> "$GITHUB_OUTPUT";
+          echo "tag_version=$normal_version" >> "$GITHUB_OUTPUT";
 
-      - name: New versions using release_type
+      - name: Versions using release_type
         id: new_version
         if: ${{ !inputs.version && inputs.release_type != 'none' }}
         run: |
           cargo bump ${{ inputs.release_type }};
           version=$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"version"<|[0]' --raw-string);
           echo $version;
-          echo "new_version=$version" >> "$GITHUB_OUTPUT";
+          echo "crate_version=$version" >> "$GITHUB_OUTPUT";
           normal_version=v$version
           echo $normal_version;
-          echo "normal_tag_version=$normal_version" >> "$GITHUB_OUTPUT";
+          echo "tag_version=$normal_version" >> "$GITHUB_OUTPUT";
 
       - name: Versions using tag
         id: full_version
@@ -102,43 +106,46 @@ jobs:
         run: |
           tag=${{inputs.version}};
           echo $tag;
-          echo "normal_crate_version=${tag##v} >> GITHUB_OUTPUT";
+          echo "crate_version=${tag##v} >> GITHUB_OUTPUT";
           echo ${tag##v};
 
     outputs:
-      tag_version: ${{ inputs.version || steps.new_version.outputs.normal_tag_version || steps.current_version.outputs.normal_tag_version }}
-      crate_version: ${{ steps.full_version.outputs.normal_crate_version || steps.new_version.outputs.new_version || steps.current_version.outputs.current_version }}
+      new_tag_version: ${{ inputs.version || steps.new_version.outputs.tag_version || steps.none_version.outputs.tag_version }}
+      new_crate_version: ${{ steps.full_version.outputs.crate_version || steps.new_version.outputs.crate_version || steps.none_version.outputs.crate_version }}
+
+  check-crate-type:
+    uses: ./.github/workflows/crate_type.yaml
 
   run-ci:
     needs: validate-input
     uses: ./.github/workflows/ci.yaml
 
-  cargo-semver-checks:
-    needs: [run-ci, get-version]
-    uses: ./.github/workflows/cargo_semver_checks.yaml
-    with:
-      bump-version: ${{ needs.get-version.outputs.crate_version }}
-
   add-notice:
-    needs: [run-ci, get-version]
+    needs: [get-version, run-ci]
     uses: ./.github/workflows/add_notice.yaml
     with:
-      commit_message: ${{  needs.get-version.outputs.crate_version }}
+      commit_message: ${{  needs.get-version.outputs.new_crate_version }}
+
+  cargo-semver-checks:
+    needs: [get-version, run-ci]
+    uses: ./.github/workflows/cargo_semver_checks.yaml
+    with:
+      bump-version: ${{ needs.get-version.outputs.new_crate_version }}
 
   bump-version:
-    needs: [cargo-semver-checks, get-version]
+    needs: [get-version, cargo-semver-checks]
     uses: ./.github/workflows/bump_version.yaml
     with:
-      crate-version: ${{  needs.get-version.outputs.crate_version }}
+      crate-version: ${{  needs.get-version.outputs.new_crate_version }}
 
-  update-attribution:
-    needs: [bump-version, get-version]
+  update-attributions:
+    needs: [get-version, bump-version]
     uses: ./.github/workflows/cargo_attribution.yaml
     with:
-      commit_message: ${{ needs.get-version.outputs.crate_version }}
+      commit_message: ${{ needs.get-version.outputs.new_crate_version }}
 
   create-tag:
-    needs: [get-version, update-attribution]
+    needs: [get-version, update-attributions]
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository
@@ -147,17 +154,32 @@ jobs:
       - run: git pull
 
       - uses: mukunku/tag-exists-action@v1.6.0
+        if: ${{ inputs.overwrite-tag }}
+        id: check-tag-overwrite
+        with:
+          tag: ${{  needs.get-version.outputs.new_tag_version }}
+
+      - name: Delete tag
+        if: ${{ steps.check-tag-overwrite.outputs.exists == 'true' }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git fetch --tags
+          git tag -d ${{ needs.get-version.outputs.new_tag_version }}
+          git push -d origin ${{  needs.get-version.outputs.new_tag_version }}
+
+      - uses: mukunku/tag-exists-action@v1.6.0
         id: check-tag
         with:
-          tag: ${{  needs.get-version.outputs.tag_version }}
+          tag: ${{ needs.get-version.outputs.new_tag_version}}
 
       - name: Create tag
         if: steps.check-tag.outputs.exists == 'false'
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git tag ${{ needs.get-version.outputs.tag_version }}
-          git push origin ${{  needs.get-version.outputs.tag_version }}
+          git tag ${{ needs.get-version.outputs.new_tag_version}}
+          git push origin ${{  needs.get-version.outputs.new_tag_version}}
 
   create-release:
     needs: [get-version, create-tag]
@@ -171,14 +193,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           changelog: CHANGELOG.md
           allow-missing-changelog: true
-          ref: refs/tags/${{ needs.get-version.outputs.tag_version }}
-
-  check-if-bin:
-    uses: ./.github/workflows/crate_type.yaml
+          ref: refs/tags/${{ needs.get-version.outputs.new_tag_version }}
 
   build-and-release:
-    needs: [get-version, create-release, check-if-bin]
-    if: ${{ needs.check-if-bin.outputs.is_bin == 'true' }}
+    needs: [get-version, create-release, check-crate-type]
+    if: ${{ needs.check-crate-type.outputs.is_bin == 'true' }}
     name: ${{ matrix.target }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -192,7 +211,6 @@ jobs:
           - {os: ubuntu-latest, target: riscv64gc-unknown-linux-gnu, cross: true}
 
           - {os: windows-latest, target: x86_64-pc-windows-msvc, cross: false}
-          - {os: windows-latest, target: x86_64-pc-windows-gnu, cross: true}
           - {os: windows-latest, target: aarch64-pc-windows-msvc, cross: false}
 
           - {os: macos-latest, target: x86_64-apple-darwin, cross: false}
@@ -201,19 +219,7 @@ jobs:
       - name: Fetch Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: Get sha-commit from tag
-        id: get_baseline_sha
-        shell: bash
-        run: |
-          latest_sha=$(git rev-list --tags --max-count=1)
-          echo "sha_tag=$latest_sha" >> "$GITHUB_OUTPUT";
-
-      - name: Checkout source code to specific tag
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.get_baseline_sha.outputs.sha_tag }}
+          ref: ${{ needs.get-version.outputs.new_tag_version }}
 
       - name: Install stable toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -233,11 +239,11 @@ jobs:
           include: attribution
           archive: $bin-$tag-$target
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: refs/tags/${{  needs.get-version.outputs.tag_version }}
+          ref: refs/tags/${{  needs.get-version.outputs.new_tag_version }}
           checksum: sha256
 
   publish-crate:
     needs: [create-tag]
-    if: ${{ inputs.check-to-publish }}
+    if: ${{ inputs.publish }}
     uses: ./.github/workflows/publish.yaml
     secrets: inherit

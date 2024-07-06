@@ -4,12 +4,12 @@ on:
   workflow_call:
     outputs:
       is_lib:
-        value: ${{ jobs.check-if-lib.outputs.is_lib }}
+        value: ${{ jobs.check-crate-type.outputs.is_lib }}
       is_bin:
-        value: ${{ jobs.check-if-lib.outputs.is_bin }}
+        value: ${{ jobs.check-crate-type.outputs.is_bin }}
 
 jobs:
-  check-if-lib:
+  check-crate-type:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository

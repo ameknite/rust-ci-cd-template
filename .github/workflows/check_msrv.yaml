@@ -32,7 +32,7 @@ jobs:
 
       - name: echo msrv info
         if: failure()
-        run: |
+        run: |-
           echo "current msrv: ${{ steps.data-msrv.outputs.current }}";
           new_msrv=$(cargo msrv --output-format minimal);
           echo "new msrv: $new_msrv";

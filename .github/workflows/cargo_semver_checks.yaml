@@ -32,41 +32,68 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get latest sha-commit from previous tag
-        id: get_baseline_sha
+      - name: Install jql
+        uses: taiki-e/install-action@v2
+        with:
+          tool: jql
+
+      - name: Current versions
+        id: get_baseline_hash
         run: |
-          latest_sha=$(git rev-list --tags --max-count=1)
-          echo $latest_sha
-          echo "baseline=$latest_sha" >> "$GITHUB_OUTPUT";
+          bump_version=${{ inputs.bump-version }}
+          echo "bump_version: $bump_version"
+          tag=v$bump_version
+          echo "tag: $tag"
+
+          # Check if tag exists
+          if git rev-parse --verify $tag >/dev/null 2>&1; then
+            echo "tag exists."
+            echo "tag=$tag" >> "$GITHUB_OUTPUT";
+            previous_tag=$(git tag --list --sort=refname | grep -B1 "^$tag$" | head -n1);
+            echo "previous_tag: $previous_tag";
+            if [ "$previous_tag" = "$tag" ]; then
+              hash=''
+            else
+              hash=$(git rev-parse "$previous_tag")
+            fi
+          else
+            echo "Tag doesn't exist, it will use the latest crate version as the latest_tag"
+            latest_tag=v$(cargo metadata --format-version=1 --no-deps | jql '"packages"|>"version"<|[0]' --raw-string);
+            echo "latest_tag: $latest_tag"
+            # This allow to skip semver-checks when there is not tags.
+            hash=$(git rev-parse "$latest_tag" 2>/dev/null || echo '')
+          fi
+          echo "hash: $hash";
+          echo "baseline=$hash" >> "$GITHUB_OUTPUT";
 
       - name: print if skip cargo-semver-checks
-        if: ${{ steps.get_baseline_sha.outputs.baseline == '' }}
-        run: echo "semver-checks needs a baseline. The baseline is the latest commit of the previous tag"
+        if: ${{ steps.get_baseline_hash.outputs.baseline == '' }}
+        run: echo "semver-checks needs a baseline. The baseline is the latest commit(hash) of the previous tag"
     outputs:
-      baseline: ${{ steps.get_baseline_sha.outputs.baseline }}
+      baseline: ${{ steps.get_baseline_hash.outputs.baseline }}
+      tag: ${{ steps.get_baseline_hash.outputs.tag }}
 
   cargo-semver-checks:
     needs: [check-if-lib, get-baseline]
-    if: ${{ needs.check-if-lib.outputs.is_lib == 'true' && needs.get-baseline.outputs.baseline != ''}}
+    if: ${{ needs.check-if-lib.outputs.is_lib == 'true' && needs.get-baseline.outputs.baseline != '' && inputs.release_type != 'none' }}
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ needs.get-baseline.outputs.tag || 'main' }}
 
       - name: Install stable toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: Install cargo-bump
-        if: ${{ inputs.bump-version || inputs.release_type != 'none' }}
         uses: taiki-e/install-action@v2
         with:
           tool: cargo-bump
 
       - name: Run cargo bump
-        if: ${{ inputs.bump-version || inputs.release_type != 'none'}}
-        run: cargo bump ${{ inputs.bump-version || inputs.release_type}}
+        run: cargo bump ${{ inputs.bump-version || inputs.release_type }}
 
       - name: Install cargo-semver-checks
         uses: taiki-e/install-action@v2

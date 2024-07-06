@@ -1,0 +1,27 @@
+name: Cargo Miri
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  cargo-miri-test:
+    name: Cargo miri
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v4
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Setup miri
+        run: |
+          rustup toolchain install nightly --component miri;
+          rustup override set nightly;
+          cargo miri setup;
+
+      - name: Test with Miri
+        run: cargo miri test --workspace --all-targets --all-features
+

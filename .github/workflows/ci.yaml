@@ -72,12 +72,12 @@ jobs:
       - name: Cargo doc test
         run: cargo doc --workspace --all-features
 
-  check-if-lib:
+  check-crate-type:
     uses: ./.github/workflows/crate_type.yaml
 
   cargo-test-doc:
-    needs: check-if-lib
-    if: ${{ needs.check-if-lib.outputs.is_lib == 'true' }}
+    needs: check-crate-type
+    if: ${{ needs.check-crate-type.outputs.is_lib == 'true' }}
     name: Cargo test doc
     runs-on: ubuntu-latest
 
@@ -109,26 +109,6 @@ jobs:
 
       - name: Cargo test
         run: cargo nextest run --workspace --all-targets --all-features
-
-  cargo-miri-test:
-    name: Cargo miri
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Fetch Repository
-        uses: actions/checkout@v4
-
-      - name: Install stable toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-
-      - name: Setup miri
-        run: |
-          rustup toolchain install nightly --component miri;
-          rustup override set nightly;
-          cargo miri setup;
-
-      - name: Test with Miri
-        run: cargo miri test --workspace --all-targets --all-features
 
   typos-cli:
     name: typos
@@ -198,3 +178,6 @@ jobs:
 
   check-msrv:
     uses: ./.github/workflows/check_msrv.yaml
+
+  cargo-miri:
+    uses: ./.github/workflows/cargo_miri.yaml
