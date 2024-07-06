@@ -120,8 +120,7 @@ Here you can do three things to run the workflow:
       - `patch`, `minor` and `major`.
       - It will use your current crate version as a baseline.
       - Keep in `none` if you only want the writing version.
-
-  4. Keep all with the defaults (without version and release_type = none)
+  3. Keep all with the defaults (without version and release_type = none)
       - It will use your current crate version as a baseline.
       - Run if you already update your crate version.
       - Useful for testing when you already run the workflow.
