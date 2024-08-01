@@ -13,5 +13,5 @@ jobs:
     uses: ./.github/workflows/build_and_release.yaml
     with:
       release_type: patch
-      check-to-publish: true
+      publish: true
     secrets: inherit

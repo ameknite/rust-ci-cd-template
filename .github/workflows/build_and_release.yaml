@@ -20,7 +20,7 @@ on:
           - major
       publish:
         type: boolean
-      overwrite-tag:
+      overwrite_tag:
         type: boolean
   workflow_call:
     inputs:
@@ -31,7 +31,7 @@ on:
         type: string
       publish:
         type: boolean
-      overwrite-tag:
+      overwrite_tag:
         type: boolean
 
 jobs:
@@ -154,7 +154,7 @@ jobs:
       - run: git pull
 
       - uses: mukunku/tag-exists-action@v1.6.0
-        if: ${{ inputs.overwrite-tag }}
+        if: ${{ inputs.overwrite_tag }}
         id: check-tag-overwrite
         with:
           tag: ${{  needs.get-version.outputs.new_tag_version }}
