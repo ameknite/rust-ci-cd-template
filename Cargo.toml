@@ -36,3 +36,4 @@ missing_panics_doc = "allow"
 # restriction
 undocumented_unsafe_blocks = "warn"
 multiple_unsafe_ops_per_block = "warn"
+allow_attributes = "warn"
