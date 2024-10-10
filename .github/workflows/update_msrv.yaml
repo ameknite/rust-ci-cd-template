@@ -32,7 +32,7 @@ jobs:
           current_msrv=$(cargo msrv show --output-format minimal);
           echo "current msrv: $current_msrv";
           echo "current=$current_msrv" >> "$GITHUB_OUTPUT";
-          new_msrv=$(cargo msrv show --output-format minimal --min $current_msrv);
+          new_msrv=$(cargo msrv find --min $current_msrv --output-format minimal);
           echo "new msrv: $new_msrv";
           echo "new=$new_msrv" >> "$GITHUB_OUTPUT";
 
