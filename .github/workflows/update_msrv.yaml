@@ -22,8 +22,9 @@ jobs:
       - uses: cargo-bins/cargo-binstall@main
 
       - name: Install cargo-msrv
-        # waiting for the stable release
-        run: cargo binstall cargo-msrv --version 0.16.0-beta.20 -y --force
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-msrv
 
       - name: Get msrv data
         id: data-msrv
@@ -31,7 +32,7 @@ jobs:
           current_msrv=$(cargo msrv show --output-format minimal);
           echo "current msrv: $current_msrv";
           echo "current=$current_msrv" >> "$GITHUB_OUTPUT";
-          new_msrv=$(cargo msrv --output-format minimal --min $current_msrv);
+          new_msrv=$(cargo msrv show --output-format minimal --min $current_msrv);
           echo "new msrv: $new_msrv";
           echo "new=$new_msrv" >> "$GITHUB_OUTPUT";
 
