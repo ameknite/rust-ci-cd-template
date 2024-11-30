@@ -108,7 +108,7 @@ jobs:
           tool: cargo-nextest
 
       - name: Cargo test
-        run: cargo nextest run --workspace --all-targets --all-features
+        run: cargo nextest run --workspace --all-targets --all-features --no-tests=pass
 
   typos-cli:
     name: typos
