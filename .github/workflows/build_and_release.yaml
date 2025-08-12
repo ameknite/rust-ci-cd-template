@@ -38,7 +38,7 @@ jobs:
   validate-input:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Validate input
         id: regex-match
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install jql
         if: ${{ !inputs.version }}
@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - run: git pull
 
@@ -186,7 +186,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - uses: taiki-e/create-gh-release-action@v1
         with:
@@ -217,7 +217,7 @@ jobs:
           - {os: macos-latest, target: aarch64-apple-darwin, cross: false}
     steps:
       - name: Fetch Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ needs.get-version.outputs.new_tag_version }}
 
