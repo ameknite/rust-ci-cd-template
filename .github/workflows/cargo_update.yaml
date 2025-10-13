@@ -25,7 +25,7 @@ jobs:
       - run: cargo update
 
       - name: Commit and Push
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "[${{ inputs.commit_message || 'Manual run' }}]: Update Dependencies"
 

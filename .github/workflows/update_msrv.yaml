@@ -50,6 +50,6 @@ jobs:
       - run: git pull
 
       - name: Commit and Push
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "Update MSRV from [${{steps.data-msrv.outputs.current}}] to [${{steps.data-msrv.outputs.new}}]"
