@@ -153,7 +153,7 @@ jobs:
 
       - run: git pull
 
-      - uses: mukunku/tag-exists-action@v1.6.0
+      - uses: mukunku/tag-exists-action@v1.7.0
         if: ${{ inputs.overwrite_tag }}
         id: check-tag-overwrite
         with:
@@ -168,7 +168,7 @@ jobs:
           git tag -d ${{ needs.get-version.outputs.new_tag_version }}
           git push -d origin ${{  needs.get-version.outputs.new_tag_version }}
 
-      - uses: mukunku/tag-exists-action@v1.6.0
+      - uses: mukunku/tag-exists-action@v1.7.0
         id: check-tag
         with:
           tag: ${{ needs.get-version.outputs.new_tag_version}}
