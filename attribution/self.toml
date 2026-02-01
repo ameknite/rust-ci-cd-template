@@ -1,6 +1,6 @@
 [self]
 name = "rust-ci-cd-template"
-version = "0.2.23"
+version = "0.2.24"
 description = "A rust ci/cd template for github"
 license = "CC0-1.0 OR MIT OR Apache-2.0"
 repository = "https://github.com/ameknite/rust-ci-cd-template"

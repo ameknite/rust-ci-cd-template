@@ -4,4 +4,4 @@ version = 3
 
 [[package]]
 name = "rust-ci-cd-template"
-version = "0.2.23"
+version = "0.2.24"
