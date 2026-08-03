@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install jql
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.5
         with:
           tool: jql
 
@@ -102,7 +102,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: Install cargo-bump
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.5
         with:
           tool: cargo-bump
 
@@ -110,7 +110,7 @@ jobs:
         run: cargo bump ${{ inputs.bump-version || inputs.release_type }}
 
       - name: Install cargo-semver-checks
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.5
         with:
           tool: cargo-semver-checks
 
