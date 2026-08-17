@@ -67,13 +67,13 @@ jobs:
 
       - name: Install jql
         if: ${{ !inputs.version }}
-        uses: taiki-e/install-action@v2.85.10
+        uses: taiki-e/install-action@v2.85.13
         with:
           tool: jql
 
       - name: Install cargo-bump
         if: ${{ !inputs.version }}
-        uses: taiki-e/install-action@v2.85.10
+        uses: taiki-e/install-action@v2.85.13
         with:
           tool: cargo-bump
 
