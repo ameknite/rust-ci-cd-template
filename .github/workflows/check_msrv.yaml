@@ -17,7 +17,7 @@ jobs:
       - uses: cargo-bins/cargo-binstall@main
 
       - name: Install cargo-msrv
-        uses: taiki-e/install-action@v2.86.5
+        uses: taiki-e/install-action@v2.87.0
         with:
           tool: cargo-msrv
 
