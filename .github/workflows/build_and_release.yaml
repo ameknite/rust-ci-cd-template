@@ -67,13 +67,13 @@ jobs:
 
       - name: Install jql
         if: ${{ !inputs.version }}
-        uses: taiki-e/install-action@v2.87.5
+        uses: taiki-e/install-action@v2.87.11
         with:
           tool: jql
 
       - name: Install cargo-bump
         if: ${{ !inputs.version }}
-        uses: taiki-e/install-action@v2.87.5
+        uses: taiki-e/install-action@v2.87.11
         with:
           tool: cargo-bump
 
@@ -222,7 +222,7 @@ jobs:
           ref: ${{ needs.get-version.outputs.new_tag_version }}
 
       - name: Install stable toolchain
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: actions-rust-lang/setup-rust-toolchain@v2
         with:
           target: ${{ matrix.target }}
 
